@@ -1,0 +1,10 @@
+Title: Gradient Descent Optimization
+
+We describe an iterative optimization algorithm that minimizes a loss
+function L(w). At each step, parameters are updated as:
+
+w = w - α * ∇L(w)
+
+Where α is the learning rate.
+
+The algorithm converges under standard convexity assumptions.
