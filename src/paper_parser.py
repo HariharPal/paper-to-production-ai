@@ -93,3 +93,10 @@ class PaperParser:
         tex = re.sub(r'\\bibliography{.*?}', '', tex)
         return tex
 
+    def get_full_text(self, fileName:str):
+        if fileName.endswith(".tex"):
+            with open(fileName, "r", encoding="utf-8") as f:
+                return f.read()
+            
+        else:
+            raise ValueError("Unsupported file type for full text extraction")
