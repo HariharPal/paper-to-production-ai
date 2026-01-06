@@ -1,27 +1,46 @@
 # Paper-to-Production AI Engineer
 
-An AI system that reads ML research papers and converts them into
-production-ready, testable code.
+An AI system that reads machine learning research papers and converts them
+into clean, production-ready code with tests and benchmarks.
 
 ## Problem
-Most research never reaches production due to translation complexity.
+Breakthrough research often fails to reach real-world systems because:
+- Papers are written for humans, not machines
+- Implementations are incomplete or experimental
+- Engineering translation is slow and error-prone
 
 ## Solution
-We build an AI pipeline that:
+This project builds an AI-powered engineering pipeline that:
 1. Parses research papers
-2. Extracts algorithms
-3. Generates clean, modular code
-4. Adds tests & benchmarks
+2. Extracts algorithmic intent and constraints
+3. Generates modular, readable production code
+4. Validates correctness with tests and benchmarks
+
+## Why This Is Hard
+- Research papers mix math, prose, and pseudo-code
+- Implementation details are often implicit
+- Production code requires structure, testing, and performance awareness
+
+## Architecture
+- Paper → Parser → Algorithm Extractor → Code Generator → Validator
 
 ## Demo
-- Input: Research paper PDF
-- Output: Working Python module + tests
+A minimal end-to-end demo is provided using a sample research paper:
+- Input: Research description
+- Output: Working Python implementation + validation
+
+See `demo/demo.ipynb`
 
 ## Current Status
 - MVP supports algorithmic ML papers
-- Focused on reproducibility & performance
+- Focused on correctness and reproducibility
+- Designed for extension to frontier AI research
 
 ## Roadmap
+- PDF + LaTeX parsing
 - Multi-paper reasoning
 - Hardware-aware optimization
-- Enterprise integration
+- Integration with CI/CD pipelines
+
+## Vision
+Turn scientific progress into deployable software — automatically.
