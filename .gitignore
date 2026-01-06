@@ -8,4 +8,15 @@ build/
 .env
 .env.*
 ENV/
+<<<<<<< HEAD
+env/
+.pytest_cache/
+*.egg-info/
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.py[cod]
+*$py.class
+=======
 env/

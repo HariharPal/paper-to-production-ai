@@ -1,4 +1,4 @@
-from src.algorithm_extractor import call_gemini  
+from src.problem_extractor import call_gemini  
 
 SYSTEM_PROMPT = """
 You are an expert research engineer.
