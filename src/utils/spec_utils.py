@@ -11,6 +11,7 @@ def normalize_spec(spec: dict) -> dict:
     normalized.setdefault("constraints", [])
     normalized.setdefault("assumptions", [])
     normalized.setdefault("solution_quality", {})
+    normalized.setdefault("language", [{"name":"python"}])
 
     return normalized
 

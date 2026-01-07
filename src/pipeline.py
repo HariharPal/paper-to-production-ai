@@ -19,20 +19,13 @@ class PaperToProdPipeline:
         full_text = parser.get_full_text(fileName)
         parsed = parser.parse(fileName)
 
-        lang_info = lang_detector.detect(full_text)
-        if not lang_info.get("languages"):
-            raise RuntimeError("Language detection failed")
-
-        primary_language = lang_info["languages"][0]["name"]
-
-        problem_spec = problem_extractor.extract(parsed, full_text)
-        print(problem_spec)
+        problem_spec = problem_extractor.extract(parsed)
         problem_spec = normalize_spec(problem_spec)
 
         if not is_valid_problem_spec(problem_spec):
             raise RuntimeError("No valid problem found in paper")
 
-        plan = planner.plan(problem_spec, primary_language)
+        plan = planner.plan(problem_spec, problem_spec["languages"][0]["name"])
         paper_name = os.path.splitext(os.path.basename(fileName))[0]
         output_dir = os.path.join("codes", paper_name)
 

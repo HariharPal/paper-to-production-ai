@@ -13,90 +13,42 @@ class PaperParser:
 
 
         section_pattern = re.compile(r'\\section{(.+?)}')
-        sections = []
-        for match in section_pattern.finditer(tex):
-            sections.append({
-                "title":match.group(1),
-                "start":match.end()
-            })
-
-
-        for i in range(len(sections)):
-            if i<len(sections) - 1:
-                sections[i]["end"] = sections[i+1]["start"]
-            else:
-                sections[i]["end"] = len(tex)
+        sections = {}
         
-        structured_sections = {}
-        for sec in sections:
-            content = tex[sec["start"]: sec["end"]]
+        matches = list(section_pattern.finditer(tex))
 
-            subsections = []
-            subsection_pattern = re.compile(r'\\subsection{(.+?)}')
 
-            for match in subsection_pattern.finditer(content):
-                subsections.append({
-                    "title":match.group(1),
-                    "start":match.end()
-                })
-            
-            for i in range(len(subsections)):
-                if i<len(subsections) - 1:
-                    subsections[i]["end"] = sections[i-1]["start"]
-                else:
-                    subsections[i]["end"] = len(content)
+        for i,match in enumerate(matches):
+            title = match.group(1).strip()
+            start = match.end()
+            end = matches[i + 1].start() if i + 1 < len(matches) else len(tex)
+            if title.strip().lower() == "acknowledgements":
+                continue
+            content = tex[start:end].strip()
+            content = self.cleanSectionText(content)
 
-            structured_sections[sec["title"]] = {"subsections": {}}
-            
-            if subsections:
+            sections[title] = {
+                "text": content
+            }
 
-                for subsec in subsections:
-                    cont = content[subsec["start"]:subsec["end"]]
-                    algo_blocks = re.findall(
-                        r'\\begin{algorithm}(.+?)\\end{algorithm}',
-                        cont,
-                        re.DOTALL
-                    )
-                    equations = re.findall(
-                        r'\\begin{equation}(.+?)\\end{equation}',
-                        cont,
-                        re.DOTALL
-                    )
-                    structured_sections[sec["title"]]["subsections"][subsec["title"]] = {
-                        "text":cont.strip(),
-                        "algorithms": algo_blocks,
-                        "equations": equations,
-                    }
-            else:
-                algo_blocks = re.findall(
-                    r'\\begin{algorithm}(.+?)\\end{algorithm}',
-                    content,
-                    re.DOTALL
-                )
-                equations = re.findall(
-                    r'\\begin{equation}(.+?)\\end{equation}',
-                    content,
-                    re.DOTALL
-                )
-                structured_sections[sec["title"]]["subsections"]["__root__"] = {
-                    "text": content.strip(),
-                    "algorithms": algo_blocks,
-                    "equations": equations,
-                }
+        return sections
 
-        
-        return structured_sections
-
-    def cleanTex(self, tex):
+    def cleanTex(self, tex: str) -> str:
         tex = re.sub(r'%.*', '', tex)
-        tex = re.sub(r'\\usepackage{.*?}', '', tex)
-        tex = re.sub(r'\\bibliography{.*?}', '', tex)
+        tex = re.sub(r'\\usepackage\{.*?\}', '', tex)
+        tex = re.sub(r'\\bibliography\{.*?\}', '', tex)
+        tex = re.sub(r'\\begin\{document\}|\\end\{document\}', '', tex)
+
         return tex
 
-    def get_full_text(self, fileName:str):
-        if fileName.endswith(".tex"):
-            with open(fileName, "r", encoding="utf-8") as f:
-                return f.read()
-            
-        else:
-            raise ValueError("Unsupported file type for full text extraction")
+    def cleanSectionText(self, text: str) -> str:
+        text = re.sub(r'\\subsection\{.*?\}', '', text)
+        text = re.sub(r'\\cite\{.*?\}', '', text)
+        text = re.sub(r'\s+', ' ', text)
+        return text.strip()
+
+    def get_full_text(self, fileName: str) -> str:
+        if not fileName.endswith(".tex"):
+            raise ValueError("Unsupported file type")
+        with open(fileName, "r", encoding="utf-8") as f:
+            return f.read()
