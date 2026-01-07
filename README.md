@@ -15,7 +15,7 @@ The goal of this project is to bridge the gap between academic research and real
 
 1. Clone the repository
 ```
-git clone <repository-url>
+git clone https://github.com/HariharPal/paper-to-production-ai.git
 cd paper-to-production-ai
 ```
 2. Create a virtual environment in the project root
