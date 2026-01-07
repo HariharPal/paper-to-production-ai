@@ -38,7 +38,9 @@ Given a research paper (LaTeX / text):
 
 ## Pipeline Architecture
 
+```
 Research Paper -> PaperParser -> ProblemExtractor -> LanguageDetector -> CodePlanner -> CodeGenerator -> Generated Code + README
+```
 
 Each stage is isolated and testable.
 
@@ -95,7 +97,7 @@ Each stage is isolated and testable.
 ## Output Structure
 
 For each paper:
-
+```
 codes/
 └── <paper_name>/
 ├── src/
@@ -103,6 +105,7 @@ codes/
 ├── tests/
 │ └── test_basic.<lang>
 └── README.md
+```
 
 Only **one README per paper**, summarizing:
 
