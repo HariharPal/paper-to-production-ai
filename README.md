@@ -1,171 +1,106 @@
 # Paper-to-Production AI
 
-An AI-driven system that reads research papers and automatically generates
-production-ready codebases with structure, tests, and documentation.
+Paper-to-Production AI is an automated system that reads research papers and converts them into structured, production-ready codebases.
 
-This project focuses on **bridging the gap between research and engineering**
-by extracting _problems, constraints, assumptions, and implementation intent_
-from academic papers and converting them into usable software artifacts.
+The goal of this project is to bridge the gap between academic research and real software engineering by extracting the core problem from a paper and generating clean, usable code.
 
----
+## Requirements
 
-## What This Project Does
+- Python 3.9+
+- pip
+- Virtual environment support (venv)
+- LaTeX research paper (.tex)
 
-Given a research paper (LaTeX / text):
+## Setup
 
-1. **Parses the paper**
-   - Extracts structured sections, subsections, equations, and text
-2. **Identifies the core problem**
-   - What is being solved (optimization, learning, game theory, etc.)
-   - Inputs, outputs, constraints, assumptions
-3. **Infers the implementation language**
-   - Based on domain, math style, and tooling cues in the paper
-4. **Plans a production codebase**
-   - Folder structure
-   - Entry points
-   - Public APIs
-   - Dependencies
-   - Testing strategy
-5. **Generates production code**
-   - Clean, minimal comments
-   - Clear function boundaries
-   - Language-appropriate structure
-6. **Produces a single README**
-   - Practical summary of what the generated code does
-   - No theory or academic exposition
-
----
-
-## Pipeline Architecture
-
+1. Clone the repository
 ```
-Research Paper -> PaperParser -> ProblemExtractor -> LanguageDetector -> CodePlanner -> CodeGenerator -> Generated Code + README
+git clone <repository-url>
+cd paper-to-production-ai
+```
+2. Create a virtual environment in the project root
+```
+python -m venv venv
+```
+3. Activate the virtual environment
+
+      Linux / macOS:
+      ```
+      source venv/bin/activate
+      ```
+      
+      Windows:
+      ```
+      venv\Scripts\activate
+      ```
+
+3. Install dependencies
+```
+pip install -r requirements.txt
 ```
 
-Each stage is isolated and testable.
+If dependencies are already installed, just activate the environment and continue.
 
----
+## Running the Project
 
-## Core Components
+Run the pipeline by providing a LaTeX research paper
+```
+python run_pipeline.py
+```
 
-### PaperParser
+The system will automatically:
 
-- Reads LaTeX / text papers
-- Extracts:
-  - Full text
-  - Sections and subsections
-  - Equations and structured content
+- Parse the paper
+- Extract the core computational problem
+- Infer the most suitable programming language
+- Plan a production-ready codebase
+- Generate clean source code
+- Create a concise README for the generated code
 
-### ProblemExtractor
+## Output
 
-- Extracts the **core computational problem**
-- Outputs:
-  - problem_name
-  - problem_type (optimization, game_theory, learning, etc.)
-  - inputs / outputs
-  - constraints
-  - assumptions
-- Explicitly avoids algorithms and theory
+Generated code is written to the codes directory
 
-### LanguageDetector
-
-- Infers the most suitable implementation language
-- Uses domain and implementation cues from the paper
-- Supports multi-language planning
-
-### CodePlanner
-
-- Converts problem specs into:
-  - File layout
-  - Entry point
-  - Dependencies
-  - Public API
-  - Test strategy
-- Returns **strict JSON only**
-
-### CodeGenerator
-
-- Generates production-quality code
-- Enforces strict style rules:
-  - Minimal comments
-  - Short docstrings only
-  - No theory or explanations
-- Creates a clean folder under `codes/<paper_name>/`
-
----
-
-## Output Structure
-
-For each paper:
 ```
 codes/
 └── <paper_name>/
-├── src/
-│ └── main.<lang>
-├── tests/
-│ └── test_basic.<lang>
-└── README.md
+    ├── src/
+    ├── tests/
+    └── README.md
 ```
 
-Only **one README per paper**, summarizing:
+Each paper produces a self-contained codebase with its own README.
 
-- What the paper enables in practice
-- What was implemented
-- Repository structure
+## Pipeline Overview
 
----
-
-## Testing
-
-- Smoke tests validate the full pipeline
-- Unit tests validate:
-  - JSON extraction correctness
-  - Planner output validity
-  - Code generation sanity
-- No external execution required for tests
-
----
+Paper
+→ PaperParser
+→ ProblemExtractor
+→ LanguageDetector
+→ CodePlanner
+→ CodeGenerator
+→ Production Code
 
 ## Design Principles
 
-- **Problem-first**, not algorithm-first
-- **Strict JSON contracts** between stages
-- **LLM outputs never trusted blindly**
-- **Minimal theory in generated code**
-- **Production readability over academic completeness**
+- Problem-first, not algorithm-first
+- One-pass paper understanding
+- Strict JSON contracts between stages
+- Minimal theory in generated code
+- Production structure over academic completeness
 
----
+## Supported Inputs
 
-## Current Capabilities
+- LaTeX research papers (.tex)
+- Optimization, learning, and systems papers
 
-- Works with LaTeX research papers
-- Handles optimization and game-theoretic papers
-- Generates structured, runnable codebases
-- Supports language-aware generation
-- End-to-end pipeline tested via pytest
+## Limitations
 
----
-
-## Limitations (Intentional)
-
-- Does not reproduce full mathematical proofs
-- Does not guess missing algorithm details
-- Does not optimize for peak performance yet
+- Does not reproduce mathematical proofs
+- Does not infer missing algorithmic details
+- Not optimized for peak performance
 - Focused on correctness and structure first
-
----
-
-## Future Work
-
-- Multi-algorithm extraction per paper
-- Cross-paper reasoning
-- Benchmark reproduction
-- Hardware-aware planning
-- CI/CD integration
-
----
 
 ## Goal
 
-Turn research papers into **real software**, not toy implementations —
-automatically, reliably, and reproducibly.
+Turn research papers into real, usable software automatically, reliably, and reproducibly.
